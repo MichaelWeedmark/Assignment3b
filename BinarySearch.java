@@ -121,34 +121,132 @@ public class Main {
 	
 	public static void FindInput(int[] array, int input){
 		
-        boolean foundInput = false;
+		// Perform a binary search, in which the program searches for a number in a sorted array
+		// by checking if it is higher or lower by the middle number, then cutting the array in
+		// half based on that. it keeps cutting until it finds the number.
 		
-		for (int counter = 0; counter < array.length; counter++){
+		int lowestNum = 0;
+		int highestNum = array.length;
+		int middle = 0;
+		
+		int lowerBound;
+		int upperBound;
+		int numRange = 1;
+		
+		while (lowestNum <= highestNum){
 			
-			if (input == array[counter]){
+			middle = (lowestNum + highestNum)/2;
+			
+			if (array[middle] < input){
 				
-				System.out.println("that number is " + (counter + 1) + " from the top of the list.");
+				lowestNum = middle + 1;
 				
-				foundInput = true;
+			}
+			
+			else if (array[middle] > input){
+				
+				highestNum = middle - 1;
+				
+			}
+			
+			else {
+				
+				break;
+				
+			}
+			
+			if (lowestNum > highestNum){
+				
+				System.out.println("That number could not be found.");
+				break;
+				
 			}
 		}
 		
-		if (!foundInput){
+		lowerBound = middle;
+		upperBound = middle;
+		
+		while (lowestNum <= highestNum){
 			
-			System.out.println("That number could not be found.");
+			if (middle - numRange >= 0){
+				
+				if (array[middle - numRange] == input){
+					
+					lowerBound --;
+					
+				}
+			}
+			
+			if (middle + numRange <= array.length - 1){
+				
+				if (array[middle + numRange] == input){
+					
+					upperBound ++;
+					
+				}
+			}
+
+			if ((middle - numRange < 0)&&(middle + numRange >array.length - 1)){
+				
+				break;
+				
+			}
+			
+			if ((middle - numRange < 0)&&(middle + numRange <= array.length - 1)){
+				
+				if (array[middle + numRange] != input){
+					
+					break;
+					
+				}
+			}
+			
+			if ((middle - numRange >= 0)&&(middle + numRange > array.length - 1)){
+				
+				if (array[middle - numRange] != input){
+					
+					break;
+					
+				}
+			}
+			
+			if ((middle - numRange >= 0)&&(middle + numRange <= array.length - 1)){
+				
+				if ((array[middle + numRange] != input)&&(array[middle - numRange] != input)){
+					
+					break;
+					
+				}
+			}
+			
+			numRange++;
 			
 		}
 		
+		if (lowestNum <= highestNum){
+			
+			if (lowerBound != upperBound){
+				
+				System.out.println("The number you want can be found at lines " + (lowerBound + 1) + " and " + (upperBound + 1) + ".");
+				
+			}
+			
+			else {
+				
+				System.out.println("The number you are looking for is " + (middle + 1) + " line(s) from the top");
+				
+			}
+		}
 	}
 	
 	public static int[] AddNewNumber(int[] array, int number){
 		
-		int[] addedArray = new int [array.length];
-		addedArray = array.clone();
-		addedArray[addedArray.length - 1] = number;
-		addedArray = SortedArray(addedArray);
+		int[] addToArray = new int [array.length];
+		addToArray = array.clone();
+		addToArray[addToArray.length - 1] = number;
+		addToArray = SortedArray(addToArray);
 		
-	    return addedArray;
+	    return addToArray;
 		
 	}
 	
